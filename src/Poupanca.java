@@ -1,17 +1,17 @@
-public class Poupanca extends Conta{
+public class Poupanca extends Conta {
     private int diaRendimento;
     private float taxaRendimento;
 
     public Poupanca(String numero, String agencia, double saldo, Cliente cliente,
-                    int diaRendimento, float taxaRendimento){
+                    int diaRendimento, float taxaRendimento) {
         super(numero, agencia, saldo, cliente);
         this.diaRendimento = diaRendimento;
         this.taxaRendimento = taxaRendimento;
     }
 
-    public int getDiaRendimento(){return this.diaRendimento;}
-    public void setDiaRendimento(int diaRendimento){this.diaRendimento = diaRendimento;}
+    public int getDiaRendimento() {return this.diaRendimento;}
+    public void setDiaRendimento(int diaRendimento) {this.diaRendimento = diaRendimento;}
 
-    public float getTaxaRendimento(){return this.taxaRendimento;}
-    public void setTaxaRendimento(float taxaRendimento){this.taxaRendimento = taxaRendimento;}
+    public float getTaxaRendimento() {return this.taxaRendimento;}
+    public void setTaxaRendimento(float taxaRendimento) {this.taxaRendimento = taxaRendimento;}
 }
