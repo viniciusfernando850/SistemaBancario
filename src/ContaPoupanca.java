@@ -1,9 +1,9 @@
-public class Poupanca extends Conta {
+public class ContaPoupanca extends Conta {
     private int diaRendimento;
     private float taxaRendimento;
 
-    public Poupanca(String numero, String agencia, double saldo, Cliente cliente,
-                    int diaRendimento, float taxaRendimento) {
+    public ContaPoupanca(String numero, String agencia, double saldo, Cliente cliente,
+                         int diaRendimento, float taxaRendimento) {
         super(numero, agencia, saldo, cliente);
         this.diaRendimento = diaRendimento;
         this.taxaRendimento = taxaRendimento;
