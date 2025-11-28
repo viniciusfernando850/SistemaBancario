@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class ContaPoupanca extends Conta {
     private int diaRendimento;
     private float taxaRendimento;

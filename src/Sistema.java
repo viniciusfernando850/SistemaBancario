@@ -1,8 +1,9 @@
 import java.util.Scanner;
 
 public class Sistema {
+    private static Banco banco;
 
-    public static void cadastrarCliente(Scanner sc, Banco banco) {
+    public static void cadastrarCliente(Scanner sc) {
         System.out.println("============= Novo Cliente =============");
         System.out.print("Nome do cliente: ");
         String nome = sc.nextLine();
@@ -10,29 +11,22 @@ public class Sistema {
         System.out.print("CPF: ");
         String cpf = sc.next();
 
-        for (int i = 0; i < banco.getQuantidadeClientes(); i++) {
-            if (banco.getClientes()[i] == null) {
-                banco.getClientes()[i] = new Cliente(nome, cpf);
-                break;
-            }
-        }
+        banco.inserirCliente(new Cliente(nome, cpf));
 
         System.out.println("\n=========== Abrir Nova Conta ===========");
-        Sistema.abrirConta(sc, banco);
+        Sistema.abrirNovaConta(sc, banco);
         System.out.println("Cliente cadastrado com sucesso!");
         System.out.println("========================================");
     }
 
-    public static void abrirConta(Scanner sc, Banco banco) {
+    public static void abrirNovaConta(Scanner sc, Banco banco) {
         System.out.print("CPF do cliente: ");
         String cpf = sc.next();
 
-        Cliente cliente = null;
-        for (int i = 0; i < banco.getQuantidadeClientes(); i++) {
-            if (banco.getClientes()[i].getCpf().equals(cpf)) {
-                cliente = banco.getClientes()[i];
-                break;
-            }
+        Cliente cliente = banco.getCliente(cpf);
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado!");
+            return;
         }
 
         System.out.print("Saldo inicial: R$ ");
@@ -48,11 +42,8 @@ public class Sistema {
             System.out.print("Sua opção: ");
             int tipoConta = sc.nextInt();
 
-            if (tipoConta == 1) {
-                Sistema.abrirContaCorrente(sc, banco, cliente, saldo);
-                break;
-            } else if (tipoConta == 2) {
-                Sistema.abrirContaPoupanca(sc, banco, cliente, saldo);
+            if (tipoConta == 1 || tipoConta == 2) {
+                banco.abrirConta(tipoConta, sc, cliente, saldo);
                 break;
             } else {
                 System.out.println("Opção Inválida!");
@@ -62,38 +53,9 @@ public class Sistema {
         System.out.println("Conta criada com sucesso!");
     }
 
-    public static void abrirContaCorrente(Scanner sc, Banco banco, Cliente cliente, double saldo) {
-        System.out.print("Limite do cheque especial: R$ ");
-        double limiteChequeEspecial = sc.nextDouble();
-
-        for (int i = 0; i < banco.getQuantidadeContas(); i++) {
-            if (banco.getContas()[i] == null) {
-                banco.getContas()[i] = new ContaCorrente("85200", "001", saldo,
-                                                        cliente, limiteChequeEspecial);
-                break;
-            }
-        }
-    }
-
-    public static void abrirContaPoupanca(Scanner sc, Banco banco, Cliente cliente, double saldo) {
-        System.out.print("Dia do rendimento: ");
-        int diaRendimento = sc.nextInt();
-
-        System.out.print("Taxa de rendimento [%]: ");
-        float taxaRendimento = sc.nextFloat();
-
-        for (int i = 0; i < banco.getQuantidadeContas(); i++) {
-            if (banco.getContas()[i] == null) {
-                banco.getContas()[i] = new ContaPoupanca("47200", "001", saldo, cliente,
-                                                        diaRendimento, taxaRendimento);
-                break;
-            }
-        }
-    }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Banco banco = new Banco("Inter S.A.", 30, 20);
+        Sistema.banco = new Banco("Inter S.A.", 30, 20);
 
         System.out.println("========================================");
         System.out.printf("\t\t   Sistema %s\n", banco.getNome());
@@ -116,16 +78,15 @@ public class Sistema {
         while (true) {
             System.out.print("Escolha uma opção: ");
             int opcao = sc.nextInt();
+            sc.nextLine();
 
             switch (opcao) {
                 case 1:
-                    Sistema.cadastrarCliente(new Scanner(System.in), banco);
+                    Sistema.cadastrarCliente(sc);
                     break;
-
                 case 2:
-                    Sistema.abrirConta(sc, banco);
+                    Sistema.abrirNovaConta(sc, banco);
                     break;
-
                 case 3:
                     // Depositar
                     break;
